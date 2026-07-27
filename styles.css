@@ -1,0 +1,375 @@
+/* =========================================
+   THEME VARIABLES
+   ========================================= */
+:root {
+    /* Light mode */
+    --bg-color: #f5f6fa;
+    --text-color: #333;
+    --card-bg: #fff;
+    --border-color: #e3e3e3;
+    --accent-color: #007bff;
+    --accent-hover: #005fcc;
+    --header-bg: #eef1f7; 
+}
+
+body.dark-mode {
+    /* Dark mode */
+    --bg-color: #1e1e1e;
+    --text-color: #eaeaea;
+    --card-bg: #2a2a2a;
+    --border-color: #444;
+    --accent-color: #4da3ff;
+    --accent-hover: #1e90ff;
+    --header-bg: #3a3a3a; 
+}
+
+/* =========================================
+   GLOBAL
+   ========================================= */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Inter, Arial, sans-serif;
+    background: var(--bg-color);
+    color: var(--text-color);
+}
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: 40px auto;
+}
+
+/* =========================================
+   THEME TOGGLE BUTTON
+   ========================================= */
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    transition: background 0.2s ease;
+    z-index: 300;
+}
+
+.theme-toggle:hover {
+    background: var(--accent-hover);
+}
+
+/* =========================================
+   TITLE SECTION
+   ========================================= */
+.title {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.title h1 {
+    font-size: 2.2rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.title p {
+    color: var(--text-color);
+    opacity: 0.8;
+}
+
+/* =========================================
+   FORM
+   ========================================= */
+#orderForm {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+#orderForm input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+#orderForm button {
+    grid-column: span 4;
+    padding: 12px;
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+#orderForm button:hover {
+    background: var(--accent-hover);
+}
+
+/* =========================================
+   TABLE
+   ========================================= */
+.informationTable {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.informationTable h2 {
+    margin-bottom: 15px;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+thead {
+    background: var(--header-bg);
+}
+
+th {
+    text-align: left;
+    padding: 12px;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-color);
+}
+
+/* =========================================
+   ARROW BUTTON
+   ========================================= */
+.arrowBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    transition: 0.2s;
+    color: var(--text-color);
+}
+
+.arrowBtn:hover {
+    transform: scale(1.2);
+}
+
+th:first-child,
+td:first-child {
+    width: 30px;
+    text-align: center;
+}
+
+/* =========================================
+   HISTORY DROPDOWN
+   ========================================= */
+.historyContainer {
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-top: 4px;
+    padding: 12px 15px;
+    box-shadow: inset 0 0 4px rgba(0,0,0,0.05);
+    transition: all 0.25s ease;
+}
+
+.historyContainer.hidden {
+    display: none;
+}
+
+.historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+}
+
+.historyTable th,
+.historyTable td {
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border-color);
+    word-wrap: break-word;
+}
+
+/* =========================================
+   MODAL
+   ========================================= */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+}
+
+.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 25px;
+    width: 420px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: fadeIn 0.2s ease-in-out;
+    color: var(--text-color);
+}
+
+#editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+#editForm input {
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+#editForm button {
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: 0.2s;
+}
+
+#editForm button[type="submit"] {
+    background: var(--accent-color);
+    color: #fff;
+}
+
+#editForm button[type="submit"]:hover {
+    background: var(--accent-hover);
+}
+
+#closeModal {
+    background: #dc3545;
+    color: #fff;
+}
+
+#closeModal:hover {
+    background: #b52a36;
+}
+
+/* =========================================
+   ANIMATION
+   ========================================= */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   RESPONSIVE
+   ========================================= */
+@media (max-width: 900px) {
+    #orderForm {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    #orderForm button {
+        grid-column: span 2;
+    }
+    table {
+        font-size: 0.9rem;
+    }
+    th, td {
+        padding: 10px;
+    }
+    .modal-content {
+        width: 90%;
+        max-width: 380px;
+    }
+}
+
+@media (max-width: 600px) {
+    #orderForm {
+        grid-template-columns: 1fr;
+    }
+    #orderForm button {
+        grid-column: span 1;
+    }
+    .title h1 {
+        font-size: 1.8rem;
+    }
+    .informationTable {
+        overflow-x: auto;
+    }
+    table {
+        min-width: 700px;
+    }
+    .modal-content {
+        width: 95%;
+        padding: 20px;
+    }
+}
+
+@media (max-width: 400px) {
+    #orderForm input {
+        padding: 8px;
+    }
+    #orderForm button {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
+    th, td {
+        padding: 8px;
+    }
+    .modal-content {
+        padding: 15px;
+    }
+}
+
+
+.exportButtons {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.action-btn.export {
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 14px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.action-btn.export:hover {
+    background: var(--accent-hover);
+}
