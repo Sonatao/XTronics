@@ -58,14 +58,14 @@ requireLogin();
 <h3>Create New Ticket</h3>
 <form id="orderForm">
     <input type="date" id="orderDate" required>
-    <input type="text" id="customerName" required>
-    <input type="text" id="buyer" required>
-    <input type="text" id="poNumber" required>
-    <input type="text" id="partNumber" required>
-    <input type="text" id="shippingMethod" required>
-    <input type="text" id="notes">
-    <input type="text" id="trackingNumber" required>
-    <input type="text" id="status" required>
+    <input type="text" id="customerName" placeholder="Customer Name" required>
+    <input type="text" id="buyer" placeholder="Buyer" required>
+    <input type="text" id="poNumber" placeholder="PO Number" required>
+    <input type="text" id="partNumber" placeholder="Part Number" required>
+    <input type="text" id="shippingMethod" placeholder="Shipping Method" required>
+    <input type="text" id="notes" placeholder="Notes">
+    <input type="text" id="trackingNumber" placeholder="Tracking Number" required>
+    <input type="text" id="status" placeholder="Status" required>
 
     <button type="submit">Add Ticket</button>
 </form>
@@ -78,14 +78,14 @@ requireLogin();
             <input type="hidden" id="editId">
 
             <input type="date" id="editOrderDate" required>
-            <input type="text" id="editCustomerName" required>
-            <input type="text" id="editBuyer" required>
-            <input type="text" id="editPoNumber" required>
-            <input type="text" id="editPartNumber" required>
-            <input type="text" id="editShippingMethod" required>
-            <input type="text" id="editNotes">
-            <input type="text" id="editTrackingNumber" required>
-            <input type="text" id="editStatus" required>
+            <input type="text" id="editCustomerName" placeholder="Customer Name" required>
+            <input type="text" id="editBuyer" placeholder="Buyer" required>
+            <input type="text" id="editPoNumber" placeholder="PO Number" required>
+            <input type="text" id="editPartNumber" placeholder="Part Number" required>
+            <input type="text" id="editShippingMethod" placeholder="Shipping Method" required>
+            <input type="text" id="editNotes" placeholder="Notes">
+            <input type="text" id="editTrackingNumber" placeholder="Tracking Number" required>
+            <input type="text" id="editStatus" placeholder="Status" required>
 
             <button type="submit">Save Changes</button>
             <button type="button" id="closeModal">Cancel</button>
