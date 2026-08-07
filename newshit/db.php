@@ -1,7 +1,7 @@
 <?php
     $host = "localhost";
-    $user = "root";
-    $pass = "YOUR_PASSWORD";
+    $user = "Admin";
+    $pass = "123456789Admin!";
     $dbname = "ticketing";
 
     try {

@@ -1,26 +1,35 @@
+<?php
+require "auth.php";
+requireLogin();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XTronics Demo</title>
+    <title>XTronics Ticketing</title>
 
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+
 <button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
 
 <main>
 
 <section class="title">
-    <h1>Welcome to XTronics Demo</h1>
-    <p>This is just to show off the functionality as a ticket system.</p>
+    <h1>XTronics Ticketing System</h1>
+    <p>Logged in as: <?php echo htmlspecialchars(currentUsername()); ?> (<?php echo htmlspecialchars(currentUserRole()); ?>)</p>
+    <a href="logout.php">Logout</a> |
+    <?php if (currentUserRole() === "admin"): ?>
+        <a href="audit.php">Audit Log Viewer</a>
+    <?php endif; ?>
 </section>
 
 <section class="informationTable">
-    <h2>Demo Table</h2>
+    <h2>Tickets</h2>
 
     <table id="orderTable">
         <thead>
@@ -47,7 +56,7 @@
     </div>
 </section>
 
-<h3>Order Ticket Form</h3>
+<h3>Create New Ticket</h3>
 <form id="orderForm">
     <input type="date" id="orderDate" required>
     <input type="text" id="customerName" required>
@@ -59,7 +68,7 @@
     <input type="text" id="trackingNumber" required>
     <input type="text" id="status" required>
 
-    <button type="submit">Add Order</button>
+    <button type="submit">Add Ticket</button>
 </form>
 
 <!-- EDIT MODAL -->
@@ -89,6 +98,8 @@
 </main>
 
 <script>
+const userRole = "<?php echo htmlspecialchars(currentUserRole()); ?>";
+
 /* ============================================================
    LOAD ALL TICKETS
    ============================================================ */
@@ -115,7 +126,8 @@ function loadTickets() {
                     <td>${order.status}</td>
                     <td>
                         <button onclick="openEdit(${order.id})">Edit</button>
-                        <button onclick="deleteOrder(${order.id})">Delete</button>
+                        ${userRole === "admin" ? `<button onclick="deleteOrder(${order.id})">Delete</button>` : ""}
+                        <button onclick="toggleAttachments(${order.id})">Attachments</button>
                     </td>
                 `;
 
@@ -129,6 +141,15 @@ function loadTickets() {
                     </td>
                 `;
                 body.appendChild(historyRow);
+
+                // Attachments row
+                const attachRow = document.createElement("tr");
+                attachRow.innerHTML = `
+                    <td colspan="11">
+                        <div id="attachments-${order.id}" class="hidden"></div>
+                    </td>
+                `;
+                body.appendChild(attachRow);
             });
         });
 }
@@ -165,7 +186,14 @@ document.getElementById("orderForm").addEventListener("submit", e => {
    ============================================================ */
 function deleteOrder(id) {
     fetch(`crud.php?action=delete&id=${id}`)
-        .then(() => loadTickets());
+        .then(r => r.json())
+        .then(res => {
+            if (res.error) {
+                alert(res.error);
+            } else {
+                loadTickets();
+            }
+        });
 }
 
 /* ============================================================
@@ -216,7 +244,7 @@ document.getElementById("editForm").addEventListener("submit", e => {
 closeModal.onclick = () => editModal.classList.add("hidden");
 
 /* ============================================================
-   HISTORY
+   HISTORY PANEL
    ============================================================ */
 function toggleHistory(id) {
     const container = document.getElementById(`history-${id}`);
@@ -264,6 +292,61 @@ function toggleHistory(id) {
                     </tbody>
                 </table>
             `;
+
+            container.classList.remove("hidden");
+        });
+}
+
+/* ============================================================
+   ATTACHMENTS PANEL
+   ============================================================ */
+function toggleAttachments(id) {
+    const container = document.getElementById(`attachments-${id}`);
+
+    if (!container.classList.contains("hidden")) {
+        container.classList.add("hidden");
+        return;
+    }
+
+    fetch(`crud.php?action=files&id=${id}`)
+        .then(r => r.json())
+        .then(files => {
+            container.innerHTML = `
+                <h4>Attachments</h4>
+
+                <form id="uploadForm-${id}" enctype="multipart/form-data">
+                    <input type="file" name="file" required>
+                    <button type="submit">Upload</button>
+                </form>
+
+                <ul>
+                    ${files.map(f => `
+                        <li>
+                            <a href="uploads/${f.filename}" target="_blank">${f.originalName}</a>
+                            (${f.uploadedAt})
+                        </li>
+                    `).join("")}
+                </ul>
+            `;
+
+            document.getElementById(`uploadForm-${id}`).addEventListener("submit", e => {
+                e.preventDefault();
+
+                const fd = new FormData();
+                fd.append("ticketId", id);
+                fd.append("file", e.target.file.files[0]);
+
+                fetch("upload.php", { method: "POST", body: fd })
+                    .then(r => r.json())
+                    .then(res => {
+                        if (res.error) {
+                            alert(res.error);
+                        } else {
+                            toggleAttachments(id);
+                            toggleAttachments(id);
+                        }
+                    });
+            });
 
             container.classList.remove("hidden");
         });
