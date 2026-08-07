@@ -487,3 +487,264 @@ a:hover {
         padding: 0.8rem;
     }
 }
+/* ============================================
+   RESPONSIVE UPGRADE — GLOBAL
+   ============================================ */
+
+@media (max-width: 1200px) {
+    main {
+        padding: 1.5rem;
+    }
+}
+
+/* ============================================
+   TICKET CARDS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+    .ticket-card {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .ticket-meta {
+        align-items: flex-start;
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+
+    .ticket-actions {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
+    .ticket-actions button,
+    .ticket-actions label {
+        flex: 1 1 calc(50% - 0.5rem);
+        justify-content: center;
+    }
+}
+
+@media (max-width: 600px) {
+    .ticket-card {
+        padding: 0.8rem;
+        gap: 0.5rem;
+    }
+
+    .ticket-title {
+        font-size: 1rem;
+    }
+
+    .ticket-sub,
+    .ticket-notes {
+        font-size: 0.8rem;
+    }
+
+    .ticket-actions button,
+    .ticket-actions label {
+        flex: 1 1 100%;
+    }
+}
+
+/* ============================================
+   SEARCH FILTERS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+    #searchForm {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    #searchForm {
+        grid-template-columns: 1fr;
+    }
+
+    #searchForm button {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   FORMS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+    form#orderForm,
+    form#editForm {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    form#orderForm,
+    form#editForm {
+        grid-template-columns: 1fr;
+    }
+
+    form#orderForm button,
+    form#editForm button {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   MODALS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 700px) {
+    .modal-content {
+        max-width: 95%;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 500px) {
+    .modal-content {
+        max-width: 100%;
+        border-radius: 0;
+        height: 100%;
+        overflow-y: auto;
+    }
+}
+
+/* ============================================
+   ATTACHMENTS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 900px) {
+    .attachment-thumb {
+        width: 100px;
+        height: 70px;
+    }
+
+    .attachment-pdf {
+        max-width: 100%;
+        height: 250px;
+    }
+}
+
+@media (max-width: 600px) {
+    .attachments-list li {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .attachment-thumb {
+        width: 100%;
+        height: auto;
+    }
+
+    .attachment-pdf {
+        height: 200px;
+    }
+}
+
+/* ============================================
+   EXPORT BUTTONS — RESPONSIVE
+   ============================================ */
+
+@media (max-width: 600px) {
+    .exportButtons {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .exportButtons button {
+        width: 100%;
+    }
+}
+/* ============================================================
+   RESPONSIVE TABLES (Audit Log, User Management, History)
+   Turns tables into stacked cards on small screens
+   ============================================================ */
+
+@media (max-width: 900px) {
+    table,
+    .auditTable,
+    .historyTable {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        border-collapse: separate;
+        border-spacing: 0 0.5rem;
+    }
+
+    table thead,
+    .auditTable thead,
+    .historyTable thead {
+        display: none;
+    }
+
+    table tbody tr,
+    .auditTable tbody tr,
+    .historyTable tbody tr {
+        display: block;
+        background: var(--panel-bg);
+        box-shadow: var(--shadow-soft);
+        padding: 1rem;
+        border-radius: 0.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    table tbody td,
+    .auditTable tbody td,
+    .historyTable tbody td {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.4rem 0;
+        font-size: 0.85rem;
+        border-bottom: 1px solid var(--input-border);
+    }
+
+    table tbody td:last-child,
+    .auditTable tbody td:last-child,
+    .historyTable tbody td:last-child {
+        border-bottom: none;
+    }
+
+    /* Add labels before each cell */
+    table tbody td::before,
+    .auditTable tbody td::before,
+    .historyTable tbody td::before {
+        content: attr(data-label);
+        font-weight: 600;
+        color: var(--text-main);
+        margin-right: 1rem;
+    }
+}
+
+/* ============================================================
+   USER MANAGEMENT BUTTONS
+   ============================================================ */
+
+@media (max-width: 900px) {
+    .auditTable button {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+}
+
+/* ============================================================
+   ATTACHMENTS LIST
+   ============================================================ */
+
+@media (max-width: 700px) {
+    .attachments-list li {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .attachment-thumb {
+        width: 100%;
+        height: auto;
+    }
+
+    .attachment-pdf {
+        width: 100%;
+        height: 220px;
+    }
+}
