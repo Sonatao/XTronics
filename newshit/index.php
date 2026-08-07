@@ -26,7 +26,8 @@ requireLogin();
     <p>Logged in as: <?php echo htmlspecialchars(currentUsername()); ?> (<?php echo htmlspecialchars(currentUserRole()); ?>)</p>
     <a href="logout.php">Logout</a> |
     <?php if (currentUserRole() === "admin"): ?>
-        <a href="audit.php">Audit Log Viewer</a>
+        <a href="audit.php">Audit Log Viewer</a> |
+        <a href="users.php">User Management</a>
     <?php endif; ?>
 </section>
 
@@ -46,24 +47,7 @@ requireLogin();
 <section class="informationTable">
     <h2>Tickets</h2>
 
-    <table id="orderTable">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Order Date</th>
-                <th>Customer Name</th>
-                <th>Buyer</th>
-                <th>PO#</th>
-                <th>Part#</th>
-                <th>Shipping Method</th>
-                <th>Notes</th>
-                <th>Tracking #</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody id="orderTableBody"></tbody>
-    </table>
+    <div class="ticket-list" id="ticketList"></div>
 
     <div class="exportButtons">
         <button id="exportSingle" class="action-btn export">Export Selected Ticket</button>
@@ -138,49 +122,67 @@ themeToggleBtn.addEventListener("click", () => {
     applyTheme(currentTheme === "minimal" ? "github" : "minimal");
 });
 
-/* RENDER TICKETS */
+/* STATUS BADGE CLASS */
+function statusClass(status) {
+    const s = (status || "").toLowerCase();
+    if (s.includes("new")) return "status-badge status-new";
+    if (s.includes("process")) return "status-badge status-processing";
+    if (s.includes("wait")) return "status-badge status-waiting";
+    if (s.includes("ship")) return "status-badge status-shipped";
+    if (s.includes("close")) return "status-badge status-closed";
+    return "status-badge status-new";
+}
+
+/* RENDER TICKETS AS CARDS */
 function renderTickets(data) {
-    const body = document.getElementById("orderTableBody");
-    body.innerHTML = "";
+    const list = document.getElementById("ticketList");
+    list.innerHTML = "";
 
     data.forEach(order => {
-        const row = document.createElement("tr");
+        const card = document.createElement("div");
+        card.className = "ticket-card";
 
-        row.innerHTML = `
-            <td><button onclick="toggleHistory(${order.id})">▶</button></td>
-            <td>${order.orderDate}</td>
-            <td>${order.customerName}</td>
-            <td>${order.buyer}</td>
-            <td>${order.poNumber}</td>
-            <td>${order.partNumber}</td>
-            <td>${order.shippingMethod}</td>
-            <td>${order.notes}</td>
-            <td>${order.trackingNumber}</td>
-            <td>${order.status}</td>
-            <td>
-                <button onclick="openEdit(${order.id})">Edit</button>
-                ${userRole === "admin" ? `<button onclick="deleteOrder(${order.id})">Delete</button>` : ""}
-                <button onclick="toggleAttachments(${order.id})">Attachments</button>
-            </td>
+        const notesShort = order.notes && order.notes.length > 80
+            ? order.notes.substring(0, 80) + "..."
+            : (order.notes || "");
+
+        card.innerHTML = `
+            <div class="ticket-main">
+                <div class="ticket-title">
+                    ${order.customerName} &mdash; ${order.poNumber}
+                </div>
+                <div class="ticket-sub">
+                    Part: ${order.partNumber} &bull; Buyer: ${order.buyer}
+                </div>
+                <div class="ticket-notes">
+                    ${notesShort || "<em>No notes</em>"}
+                </div>
+                <div class="ticket-actions">
+                    <button onclick="openEdit(${order.id})">Edit</button>
+                    ${userRole === "admin" ? `<button onclick="deleteOrder(${order.id})">Delete</button>` : ""}
+                    <button onclick="toggleAttachments(${order.id})">Attachments</button>
+                    <button onclick="toggleHistory(${order.id})">History</button>
+                </div>
+                <div id="panel-history-${order.id}" class="ticket-panel hidden"></div>
+                <div id="panel-attachments-${order.id}" class="ticket-panel hidden"></div>
+            </div>
+            <div class="ticket-meta">
+                <div>
+                    <span class="${statusClass(order.status)}">${order.status}</span>
+                </div>
+                <div class="ticket-sub">
+                    Order Date: ${order.orderDate}
+                </div>
+                <div class="ticket-sub">
+                    Shipping: ${order.shippingMethod}
+                </div>
+                <div class="ticket-sub">
+                    Tracking: ${order.trackingNumber}
+                </div>
+            </div>
         `;
 
-        body.appendChild(row);
-
-        const historyRow = document.createElement("tr");
-        historyRow.innerHTML = `
-            <td colspan="11">
-                <div id="history-${order.id}" class="hidden"></div>
-            </td>
-        `;
-        body.appendChild(historyRow);
-
-        const attachRow = document.createElement("tr");
-        attachRow.innerHTML = `
-            <td colspan="11">
-                <div id="attachments-${order.id}" class="hidden"></div>
-            </td>
-        `;
-        body.appendChild(attachRow);
+        list.appendChild(card);
     });
 }
 
@@ -307,9 +309,9 @@ document.getElementById("editForm").addEventListener("submit", e => {
 
 closeModal.onclick = () => editModal.classList.add("hidden");
 
-/* HISTORY */
+/* HISTORY PANEL */
 function toggleHistory(id) {
-    const container = document.getElementById(`history-${id}`);
+    const container = document.getElementById(`panel-history-${id}`);
 
     if (!container.classList.contains("hidden")) {
         container.classList.add("hidden");
@@ -359,9 +361,9 @@ function toggleHistory(id) {
         });
 }
 
-/* ATTACHMENTS */
+/* ATTACHMENTS PANEL WITH PREVIEWS */
 function toggleAttachments(id) {
-    const container = document.getElementById(`attachments-${id}`);
+    const container = document.getElementById(`panel-attachments-${id}`);
 
     if (!container.classList.contains("hidden")) {
         container.classList.add("hidden");
@@ -374,19 +376,16 @@ function toggleAttachments(id) {
             container.innerHTML = `
                 <h4>Attachments</h4>
 
-                <form id="uploadForm-${id}" enctype="multipart/form-data">
-                    <input type="file" name="file" required>
-                    <button type="submit">Upload</button>
-                </form>
+                <div class="attachments-list">
+                    <form id="uploadForm-${id}" enctype="multipart/form-data">
+                        <input type="file" name="file" required>
+                        <button type="submit">Upload</button>
+                    </form>
 
-                <ul>
-                    ${files.map(f => `
-                        <li>
-                            <a href="uploads/${f.filename}" target="_blank">${f.originalName}</a>
-                            (${f.uploadedAt})
-                        </li>
-                    `).join("")}
-                </ul>
+                    <ul>
+                        ${files.map(f => renderAttachmentItem(f)).join("")}
+                    </ul>
+                </div>
             `;
 
             document.getElementById(`uploadForm-${id}`).addEventListener("submit", e => {
@@ -409,6 +408,63 @@ function toggleAttachments(id) {
             });
 
             container.classList.remove("hidden");
+        });
+}
+
+function renderAttachmentItem(f) {
+    const ext = f.originalName.split(".").pop().toLowerCase();
+    const isImage = ["jpg", "jpeg", "png", "gif"].includes(ext);
+    const isPdf = ext === "pdf";
+
+    let preview = "";
+
+    if (isImage) {
+        preview = `
+            <div class="attachment-thumb">
+                <img src="uploads/${f.filename}" alt="${f.originalName}">
+            </div>
+        `;
+    } else if (isPdf) {
+        preview = `
+            <div class="attachment-pdf">
+                <embed src="uploads/${f.filename}" type="application/pdf" width="100%" height="100%">
+            </div>
+        `;
+    } else {
+        preview = `<span>[${ext.toUpperCase()}]</span>`;
+    }
+
+    const deleteBtn = userRole === "admin"
+        ? `<button onclick="deleteAttachment(${f.id})">Delete</button>`
+        : "";
+
+    return `
+        <li>
+            ${preview}
+            <div>
+                <a href="uploads/${f.filename}" target="_blank">${f.originalName}</a><br>
+                <small>${f.uploadedAt}</small><br>
+                ${deleteBtn}
+            </div>
+        </li>
+    `;
+}
+
+function deleteAttachment(id) {
+    if (!confirm("Delete this attachment?")) return;
+
+    const fd = new FormData();
+    fd.append("mode", "delete");
+    fd.append("id", id);
+
+    fetch("upload.php", { method: "POST", body: fd })
+        .then(r => r.json())
+        .then(res => {
+            if (res.error) {
+                alert(res.error);
+            } else {
+                loadTickets();
+            }
         });
 }
 </script>
