@@ -1,0 +1,28 @@
+:root {
+    --bg-body: #0d1117;
+    --text-main: #c9d1d9;
+
+    --panel-bg: #161b22;
+    --modal-backdrop: rgba(0, 0, 0, 0.6);
+
+    --input-bg: #0d1117;
+    --input-border: #30363d;
+
+    --table-header-bg: #21262d;
+    --table-header-text: #c9d1d9;
+    --table-row-alt-bg: #0d1117;
+    --table-row-hover-bg: #161b22;
+
+    --btn-primary-bg: #238636;
+    --btn-primary-bg-hover: #2ea043;
+    --btn-primary-text: #ffffff;
+
+    --btn-secondary-bg: #30363d;
+    --btn-secondary-bg-hover: #21262d;
+    --btn-secondary-text: #c9d1d9;
+
+    --link-color: #58a6ff;
+
+    --shadow-soft: 0 8px 20px rgba(0, 0, 0, 0.4);
+    --shadow-strong: 0 18px 40px rgba(0, 0, 0, 0.7);
+}

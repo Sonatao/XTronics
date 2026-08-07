@@ -10,12 +10,14 @@ requireLogin();
     <title>XTronics Ticketing</title>
 
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="styles.base.css">
+    <link id="themeStylesheet" rel="stylesheet" href="theme.minimal.css">
 </head>
 
 <body>
 
-<button id="themeToggle" class="theme-toggle">🌙 Dark Mode</button>
+<button id="themeToggle" class="theme-toggle">Switch Theme</button>
 
 <main>
 
@@ -84,7 +86,6 @@ requireLogin();
     <button type="submit">Add Ticket</button>
 </form>
 
-<!-- EDIT MODAL -->
 <div id="editModal" class="modal hidden">
     <div class="modal-content">
         <h1>Edit Ticket</h1>
@@ -113,9 +114,31 @@ requireLogin();
 <script>
 const userRole = "<?php echo htmlspecialchars(currentUserRole()); ?>";
 
-/* ============================================================
-   RENDER TICKETS
-   ============================================================ */
+/* THEME TOGGLE */
+const themeToggleBtn = document.getElementById("themeToggle");
+const themeLink = document.getElementById("themeStylesheet");
+
+let currentTheme = localStorage.getItem("xt_theme") || "minimal";
+
+function applyTheme(theme) {
+    if (theme === "minimal") {
+        themeLink.href = "theme.minimal.css";
+        themeToggleBtn.textContent = "Switch to GitHub Dark";
+    } else {
+        themeLink.href = "theme.github.css";
+        themeToggleBtn.textContent = "Switch to Minimal Light";
+    }
+    currentTheme = theme;
+    localStorage.setItem("xt_theme", theme);
+}
+
+applyTheme(currentTheme);
+
+themeToggleBtn.addEventListener("click", () => {
+    applyTheme(currentTheme === "minimal" ? "github" : "minimal");
+});
+
+/* RENDER TICKETS */
 function renderTickets(data) {
     const body = document.getElementById("orderTableBody");
     body.innerHTML = "";
@@ -161,9 +184,7 @@ function renderTickets(data) {
     });
 }
 
-/* ============================================================
-   LOAD ALL (DEFAULT)
-   ============================================================ */
+/* LOAD ALL */
 function loadTickets() {
     fetch("crud.php?action=read")
         .then(r => r.json())
@@ -172,9 +193,7 @@ function loadTickets() {
 
 loadTickets();
 
-/* ============================================================
-   SEARCH + FILTERS
-   ============================================================ */
+/* SEARCH */
 document.getElementById("searchForm").addEventListener("submit", e => {
     e.preventDefault();
 
@@ -207,9 +226,7 @@ document.getElementById("clearFilters").addEventListener("click", () => {
     loadTickets();
 });
 
-/* ============================================================
-   CREATE
-   ============================================================ */
+/* CREATE */
 document.getElementById("orderForm").addEventListener("submit", e => {
     e.preventDefault();
 
@@ -232,9 +249,7 @@ document.getElementById("orderForm").addEventListener("submit", e => {
         });
 });
 
-/* ============================================================
-   DELETE
-   ============================================================ */
+/* DELETE */
 function deleteOrder(id) {
     fetch(`crud.php?action=delete&id=${id}`)
         .then(r => r.json())
@@ -247,9 +262,7 @@ function deleteOrder(id) {
         });
 }
 
-/* ============================================================
-   EDIT
-   ============================================================ */
+/* EDIT */
 function openEdit(id) {
     fetch(`crud.php?action=fetch&id=${id}`)
         .then(r => r.json())
@@ -294,9 +307,7 @@ document.getElementById("editForm").addEventListener("submit", e => {
 
 closeModal.onclick = () => editModal.classList.add("hidden");
 
-/* ============================================================
-   HISTORY PANEL
-   ============================================================ */
+/* HISTORY */
 function toggleHistory(id) {
     const container = document.getElementById(`history-${id}`);
 
@@ -348,9 +359,7 @@ function toggleHistory(id) {
         });
 }
 
-/* ============================================================
-   ATTACHMENTS PANEL
-   ============================================================ */
+/* ATTACHMENTS */
 function toggleAttachments(id) {
     const container = document.getElementById(`attachments-${id}`);
 

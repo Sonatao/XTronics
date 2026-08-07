@@ -28,23 +28,51 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="utf-8">
     <title>Login - XTronics Ticketing</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.base.css">
+    <link id="themeStylesheet" rel="stylesheet" href="theme.minimal.css">
 </head>
 <body>
 
+<button id="themeToggle" class="theme-toggle">Switch Theme</button>
+
 <main>
     <section class="login-container">
-        <h1>Login</h1>
+        <h1>XTronics Ticketing</h1>
         <form method="POST">
             <input type="text" name="username" placeholder="Username" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
         <?php if ($error): ?>
-            <p style="color:red;"><?php echo htmlspecialchars($error); ?></p>
+            <p style="color:red; margin-top:0.75rem;"><?php echo htmlspecialchars($error); ?></p>
         <?php endif; ?>
     </section>
 </main>
+
+<script>
+const themeToggleBtn = document.getElementById("themeToggle");
+const themeLink = document.getElementById("themeStylesheet");
+
+let currentTheme = localStorage.getItem("xt_theme") || "minimal";
+
+function applyTheme(theme) {
+    if (theme === "minimal") {
+        themeLink.href = "theme.minimal.css";
+        themeToggleBtn.textContent = "Switch to GitHub Dark";
+    } else {
+        themeLink.href = "theme.github.css";
+        themeToggleBtn.textContent = "Switch to Minimal Light";
+    }
+    currentTheme = theme;
+    localStorage.setItem("xt_theme", theme);
+}
+
+applyTheme(currentTheme);
+
+themeToggleBtn.addEventListener("click", () => {
+    applyTheme(currentTheme === "minimal" ? "github" : "minimal");
+});
+</script>
 
 </body>
 </html>

@@ -1,0 +1,366 @@
+/* Base layout, structure, spacing, tables, forms, modals */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    background-color: var(--bg-body);
+    color: var(--text-main);
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    padding: 2rem;
+}
+
+/* Theme toggle */
+
+.theme-toggle {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    border: none;
+    cursor: pointer;
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Sections */
+
+section.title {
+    margin-bottom: 1.5rem;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow-soft);
+}
+
+section.title h1 {
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+}
+
+section.title p {
+    margin-bottom: 0.25rem;
+}
+
+section.title a {
+    color: var(--link-color);
+    text-decoration: none;
+    margin-right: 0.5rem;
+}
+
+section.title a:hover {
+    text-decoration: underline;
+}
+
+section.searchFilters,
+section.informationTable {
+    margin-bottom: 1.5rem;
+    padding: 1.25rem;
+    border-radius: 1rem;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow-soft);
+}
+
+/* Search form */
+
+#searchForm {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+}
+
+#searchForm input,
+#searchForm button {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-main);
+}
+
+#searchForm button {
+    border: none;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    cursor: pointer;
+}
+
+#searchForm button:hover {
+    background: var(--btn-primary-bg-hover);
+}
+
+/* Table */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.75rem;
+}
+
+table thead {
+    background: var(--table-header-bg);
+}
+
+table thead th {
+    padding: 0.6rem;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--table-header-text);
+}
+
+table tbody tr:nth-child(even) {
+    background: var(--table-row-alt-bg);
+}
+
+table tbody tr:hover {
+    background: var(--table-row-hover-bg);
+}
+
+table td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Buttons */
+
+button {
+    font-size: 0.85rem;
+}
+
+.action-btn.export {
+    margin-top: 0.75rem;
+    margin-right: 0.5rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: var(--btn-secondary-bg);
+    color: var(--btn-secondary-text);
+    cursor: pointer;
+    box-shadow: var(--shadow-soft);
+}
+
+.action-btn.export:hover {
+    background: var(--btn-secondary-bg-hover);
+}
+
+/* Forms */
+
+form#orderForm,
+form#editForm {
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow-soft);
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+}
+
+form#orderForm input,
+form#editForm input {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-main);
+}
+
+form#orderForm button,
+form#editForm button {
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    cursor: pointer;
+}
+
+form#orderForm button:hover,
+form#editForm button:hover {
+    background: var(--btn-primary-bg-hover);
+}
+
+/* Modal */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--modal-backdrop);
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    width: 100%;
+    max-width: 700px;
+    padding: 1.5rem;
+    border-radius: 1rem;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow-strong);
+}
+
+/* History & attachments */
+
+.historyTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+}
+
+.historyTable thead {
+    background: var(--table-header-bg);
+}
+
+.historyTable th,
+.historyTable td {
+    padding: 0.4rem;
+    font-size: 0.8rem;
+}
+
+#history-,
+#attachments- {
+    margin-top: 0.5rem;
+}
+
+.hidden {
+    display: none;
+}
+
+#attachments- ul {
+    list-style: none;
+    margin-top: 0.5rem;
+}
+
+#attachments- li {
+    margin-bottom: 0.25rem;
+}
+
+/* Login page */
+
+.login-container {
+    max-width: 400px;
+    margin: 4rem auto;
+    padding: 2rem;
+    border-radius: 1rem;
+    background: var(--panel-bg);
+    box-shadow: var(--shadow-soft);
+    text-align: center;
+}
+
+.login-container h1 {
+    margin-bottom: 1rem;
+}
+
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.login-container input {
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--input-border);
+    background: var(--input-bg);
+    color: var(--text-main);
+}
+
+.login-container button {
+    padding: 0.6rem 0.9rem;
+    border-radius: 0.5rem;
+    border: none;
+    background: var(--btn-primary-bg);
+    color: var(--btn-primary-text);
+    cursor: pointer;
+}
+
+.login-container button:hover {
+    background: var(--btn-primary-bg-hover);
+}
+
+/* Audit table */
+
+.auditTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+.auditTable thead {
+    background: var(--table-header-bg);
+}
+
+.auditTable th,
+.auditTable td {
+    padding: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.auditTable tbody tr:nth-child(even) {
+    background: var(--table-row-alt-bg);
+}
+
+.auditTable tbody tr:hover {
+    background: var(--table-row-hover-bg);
+}
+
+/* Links */
+
+a {
+    color: var(--link-color);
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive */
+
+@media (max-width: 900px) {
+    main {
+        padding: 1rem;
+    }
+
+    #searchForm {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    form#orderForm,
+    form#editForm {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    #searchForm {
+        grid-template-columns: 1fr;
+    }
+
+    form#orderForm,
+    form#editForm {
+        grid-template-columns: 1fr;
+    }
+}
