@@ -45,11 +45,67 @@ if (isset($_POST["action"]) && $_POST["action"] === "create") {
 }
 
 /* ============================================================
-   FETCH ALL
+   READ ALL (default)
    ============================================================ */
 if (isset($_GET["action"]) && $_GET["action"] === "read") {
     $orders = $pdo->query("SELECT * FROM orders ORDER BY id DESC")->fetchAll(PDO::FETCH_ASSOC);
     echo json_encode($orders);
+    exit;
+}
+
+/* ============================================================
+   SEARCH + FILTERS
+   ============================================================ */
+if (isset($_GET["action"]) && $_GET["action"] === "search") {
+    $q         = $_GET["q"]         ?? "";
+    $status    = $_GET["status"]    ?? "";
+    $customer  = $_GET["customer"]  ?? "";
+    $dateFrom  = $_GET["dateFrom"]  ?? "";
+    $dateTo    = $_GET["dateTo"]    ?? "";
+
+    $sql = "SELECT * FROM orders WHERE 1=1";
+    $params = [];
+
+    if ($q !== "") {
+        $sql .= " AND (
+            customerName LIKE ? OR
+            buyer LIKE ? OR
+            poNumber LIKE ? OR
+            partNumber LIKE ? OR
+            shippingMethod LIKE ? OR
+            notes LIKE ? OR
+            trackingNumber LIKE ? OR
+            status LIKE ?
+        )";
+        $like = "%$q%";
+        $params = array_merge($params, array_fill(0, 8, $like));
+    }
+
+    if ($status !== "") {
+        $sql .= " AND status = ?";
+        $params[] = $status;
+    }
+
+    if ($customer !== "") {
+        $sql .= " AND customerName LIKE ?";
+        $params[] = "%$customer%";
+    }
+
+    if ($dateFrom !== "") {
+        $sql .= " AND orderDate >= ?";
+        $params[] = $dateFrom;
+    }
+
+    if ($dateTo !== "") {
+        $sql .= " AND orderDate <= ?";
+        $params[] = $dateTo;
+    }
+
+    $sql .= " ORDER BY id DESC";
+
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
 }
 
@@ -193,7 +249,6 @@ if (isset($_GET["action"]) && $_GET["action"] === "files") {
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
 }
-
 
 echo json_encode(["error" => "No valid action"]);
 ?>

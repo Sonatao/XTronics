@@ -28,6 +28,19 @@ requireLogin();
     <?php endif; ?>
 </section>
 
+<section class="searchFilters">
+    <h2>Search & Filters</h2>
+    <form id="searchForm">
+        <input type="text" id="searchQuery" placeholder="Search text (customer, PO, part, notes, status)">
+        <input type="text" id="searchCustomer" placeholder="Customer name">
+        <input type="date" id="searchDateFrom" placeholder="From date">
+        <input type="date" id="searchDateTo" placeholder="To date">
+        <input type="text" id="searchStatus" placeholder="Status (e.g. New, Shipped)">
+        <button type="submit">Apply Filters</button>
+        <button type="button" id="clearFilters">Clear</button>
+    </form>
+</section>
+
 <section class="informationTable">
     <h2>Tickets</h2>
 
@@ -101,60 +114,98 @@ requireLogin();
 const userRole = "<?php echo htmlspecialchars(currentUserRole()); ?>";
 
 /* ============================================================
-   LOAD ALL TICKETS
+   RENDER TICKETS
+   ============================================================ */
+function renderTickets(data) {
+    const body = document.getElementById("orderTableBody");
+    body.innerHTML = "";
+
+    data.forEach(order => {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+            <td><button onclick="toggleHistory(${order.id})">▶</button></td>
+            <td>${order.orderDate}</td>
+            <td>${order.customerName}</td>
+            <td>${order.buyer}</td>
+            <td>${order.poNumber}</td>
+            <td>${order.partNumber}</td>
+            <td>${order.shippingMethod}</td>
+            <td>${order.notes}</td>
+            <td>${order.trackingNumber}</td>
+            <td>${order.status}</td>
+            <td>
+                <button onclick="openEdit(${order.id})">Edit</button>
+                ${userRole === "admin" ? `<button onclick="deleteOrder(${order.id})">Delete</button>` : ""}
+                <button onclick="toggleAttachments(${order.id})">Attachments</button>
+            </td>
+        `;
+
+        body.appendChild(row);
+
+        const historyRow = document.createElement("tr");
+        historyRow.innerHTML = `
+            <td colspan="11">
+                <div id="history-${order.id}" class="hidden"></div>
+            </td>
+        `;
+        body.appendChild(historyRow);
+
+        const attachRow = document.createElement("tr");
+        attachRow.innerHTML = `
+            <td colspan="11">
+                <div id="attachments-${order.id}" class="hidden"></div>
+            </td>
+        `;
+        body.appendChild(attachRow);
+    });
+}
+
+/* ============================================================
+   LOAD ALL (DEFAULT)
    ============================================================ */
 function loadTickets() {
     fetch("crud.php?action=read")
         .then(r => r.json())
-        .then(data => {
-            const body = document.getElementById("orderTableBody");
-            body.innerHTML = "";
-
-            data.forEach(order => {
-                const row = document.createElement("tr");
-
-                row.innerHTML = `
-                    <td><button onclick="toggleHistory(${order.id})">▶</button></td>
-                    <td>${order.orderDate}</td>
-                    <td>${order.customerName}</td>
-                    <td>${order.buyer}</td>
-                    <td>${order.poNumber}</td>
-                    <td>${order.partNumber}</td>
-                    <td>${order.shippingMethod}</td>
-                    <td>${order.notes}</td>
-                    <td>${order.trackingNumber}</td>
-                    <td>${order.status}</td>
-                    <td>
-                        <button onclick="openEdit(${order.id})">Edit</button>
-                        ${userRole === "admin" ? `<button onclick="deleteOrder(${order.id})">Delete</button>` : ""}
-                        <button onclick="toggleAttachments(${order.id})">Attachments</button>
-                    </td>
-                `;
-
-                body.appendChild(row);
-
-                // History row
-                const historyRow = document.createElement("tr");
-                historyRow.innerHTML = `
-                    <td colspan="11">
-                        <div id="history-${order.id}" class="hidden"></div>
-                    </td>
-                `;
-                body.appendChild(historyRow);
-
-                // Attachments row
-                const attachRow = document.createElement("tr");
-                attachRow.innerHTML = `
-                    <td colspan="11">
-                        <div id="attachments-${order.id}" class="hidden"></div>
-                    </td>
-                `;
-                body.appendChild(attachRow);
-            });
-        });
+        .then(renderTickets);
 }
 
 loadTickets();
+
+/* ============================================================
+   SEARCH + FILTERS
+   ============================================================ */
+document.getElementById("searchForm").addEventListener("submit", e => {
+    e.preventDefault();
+
+    const q         = document.getElementById("searchQuery").value;
+    const customer  = document.getElementById("searchCustomer").value;
+    const dateFrom  = document.getElementById("searchDateFrom").value;
+    const dateTo    = document.getElementById("searchDateTo").value;
+    const status    = document.getElementById("searchStatus").value;
+
+    const params = new URLSearchParams({
+        action: "search",
+        q,
+        customer,
+        dateFrom,
+        dateTo,
+        status
+    });
+
+    fetch("crud.php?" + params.toString())
+        .then(r => r.json())
+        .then(renderTickets);
+});
+
+document.getElementById("clearFilters").addEventListener("click", () => {
+    document.getElementById("searchQuery").value = "";
+    document.getElementById("searchCustomer").value = "";
+    document.getElementById("searchDateFrom").value = "";
+    document.getElementById("searchDateTo").value = "";
+    document.getElementById("searchStatus").value = "";
+    loadTickets();
+});
 
 /* ============================================================
    CREATE
