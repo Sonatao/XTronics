@@ -60,7 +60,7 @@ requireLogin();
     <input type="date" id="orderDate" required>
     <input type="text" id="customerName" placeholder="Customer Name" required>
     <input type="text" id="buyer" placeholder="Buyer" required>
-    <input type="text" id="vendorInfo" placeholder="Vendor Info">
+    <input type="text" id="vendorOrder" placeholder="Vendor / Vendor Order #">
     <input type="text" id="poNumber" placeholder="PO Number" required>
     <input type="text" id="partNumber" placeholder="Part Number" required>
     <input type="text" id="shippingMethod" placeholder="Shipping Method" required>
@@ -81,7 +81,7 @@ requireLogin();
             <input type="date" id="editOrderDate" required>
             <input type="text" id="editCustomerName" placeholder="Customer Name" required>
             <input type="text" id="editBuyer" placeholder="Buyer" required>
-            <input type="text" id="editVendorInfo" placeholder="Vendor Info">
+            <input type="text" id="editVendorOrder" placeholder="Vendor / Vendor Order #">
             <input type="text" id="editPoNumber" placeholder="PO Number" required>
             <input type="text" id="editPartNumber" placeholder="Part Number" required>
             <input type="text" id="editShippingMethod" placeholder="Shipping Method" required>
@@ -155,6 +155,9 @@ function renderTickets(data) {
                 </div>
                 <div class="ticket-sub">
                     Part: ${order.partNumber} &bull; Buyer: ${order.buyer}
+                </div>
+                <div class="ticket-sub">
+                    Vendor / Vendor Order #: ${order.vendorOrder || ""}
                 </div>
                 <div class="ticket-notes">
                     ${notesShort || "<em>No notes</em>"}
@@ -239,6 +242,7 @@ document.getElementById("orderForm").addEventListener("submit", e => {
     formData.append("orderDate", orderDate.value);
     formData.append("customerName", customerName.value);
     formData.append("buyer", buyer.value);
+    formData.append("vendorOrder", vendorOrder.value);
     formData.append("poNumber", poNumber.value);
     formData.append("partNumber", partNumber.value);
     formData.append("shippingMethod", shippingMethod.value);
@@ -275,6 +279,7 @@ function openEdit(id) {
             editOrderDate.value = o.orderDate;
             editCustomerName.value = o.customerName;
             editBuyer.value = o.buyer;
+            editVendorOrder.value = o.vendorOrder || "";
             editPoNumber.value = o.poNumber;
             editPartNumber.value = o.partNumber;
             editShippingMethod.value = o.shippingMethod;
@@ -295,6 +300,7 @@ document.getElementById("editForm").addEventListener("submit", e => {
     formData.append("orderDate", editOrderDate.value);
     formData.append("customerName", editCustomerName.value);
     formData.append("buyer", editBuyer.value);
+    formData.append("vendorOrder", editVendorOrder.value);
     formData.append("poNumber", editPoNumber.value);
     formData.append("partNumber", editPartNumber.value);
     formData.append("shippingMethod", editShippingMethod.value);
@@ -332,6 +338,7 @@ function toggleHistory(id) {
                             <th>Order Date</th>
                             <th>Customer</th>
                             <th>Buyer</th>
+                            <th>Vendor / Order #</th>
                             <th>PO#</th>
                             <th>Part#</th>
                             <th>Shipping</th>
@@ -347,6 +354,7 @@ function toggleHistory(id) {
                                 <td>${h.orderDate}</td>
                                 <td>${h.customerName}</td>
                                 <td>${h.buyer}</td>
+                                <td>${h.vendorOrder || ""}</td>
                                 <td>${h.poNumber}</td>
                                 <td>${h.partNumber}</td>
                                 <td>${h.shippingMethod}</td>

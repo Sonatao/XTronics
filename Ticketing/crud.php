@@ -21,14 +21,15 @@ if (isset($_POST["action"]) && $_POST["action"] === "create") {
 
     $stmt = $pdo->prepare("
         INSERT INTO orders 
-        (orderDate, customerName, buyer, poNumber, partNumber, shippingMethod, notes, trackingNumber, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (orderDate, customerName, buyer, vendorOrder, poNumber, partNumber, shippingMethod, notes, trackingNumber, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
-
+ 
     $stmt->execute([
         $_POST["orderDate"] ?? null,
         $_POST["customerName"] ?? null,
         $_POST["buyer"] ?? null,
+        $_POST["vendorOrder"] ?? null,
         $_POST["poNumber"] ?? null,
         $_POST["partNumber"] ?? null,
         $_POST["shippingMethod"] ?? null,
@@ -70,6 +71,7 @@ if (isset($_GET["action"]) && $_GET["action"] === "search") {
         $sql .= " AND (
             customerName LIKE ? OR
             buyer LIKE ? OR
+            vendorOrder LIKE ? OR
             poNumber LIKE ? OR
             partNumber LIKE ? OR
             shippingMethod LIKE ? OR
@@ -78,7 +80,7 @@ if (isset($_GET["action"]) && $_GET["action"] === "search") {
             status LIKE ?
         )";
         $like = "%$q%";
-        $params = array_merge($params, array_fill(0, 8, $like));
+        $params = array_merge($params, array_fill(0, 9, $like));
     }
 
     if ($status !== "") {
@@ -149,8 +151,8 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
     // Insert history
     $history = $pdo->prepare("
         INSERT INTO order_history 
-        (orderId, orderDate, customerName, buyer, poNumber, partNumber, shippingMethod, notes, trackingNumber, status)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (orderId, orderDate, customerName, buyer, vendorOrder, poNumber, partNumber, shippingMethod, notes, trackingNumber, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     ");
 
     $history->execute([
@@ -158,6 +160,7 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
         $oldData["orderDate"],
         $oldData["customerName"],
         $oldData["buyer"],
+        $oldData["vendorOrder"] ?? null,
         $oldData["poNumber"],
         $oldData["partNumber"],
         $oldData["shippingMethod"],
@@ -169,7 +172,7 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
     // Update main record
     $update = $pdo->prepare("
         UPDATE orders SET
-            orderDate = ?, customerName = ?, buyer = ?, poNumber = ?, partNumber = ?, 
+            orderDate = ?, customerName = ?, buyer = ?, vendorOrder = ?, poNumber = ?, partNumber = ?, 
             shippingMethod = ?, notes = ?, trackingNumber = ?, status = ?
         WHERE id = ?
     ");
@@ -178,6 +181,7 @@ if (isset($_POST["action"]) && $_POST["action"] === "update") {
         $_POST["orderDate"] ?? $oldData["orderDate"],
         $_POST["customerName"] ?? $oldData["customerName"],
         $_POST["buyer"] ?? $oldData["buyer"],
+        $_POST["vendorOrder"] ?? $oldData["vendorOrder"] ?? null,
         $_POST["poNumber"] ?? $oldData["poNumber"],
         $_POST["partNumber"] ?? $oldData["partNumber"],
         $_POST["shippingMethod"] ?? $oldData["shippingMethod"],
