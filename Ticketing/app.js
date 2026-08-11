@@ -219,6 +219,10 @@ orderForm.addEventListener("submit", e => {
 
 /* DELETE */
 function deleteOrder(id) {
+    if (!window.confirm("Are you sure you want to delete this ticket? This action cannot be undone.")) {
+        return;
+    }
+
     fetch(`crud.php?action=delete&id=${id}`)
         .then(r => r.json())
         .then(res => {
