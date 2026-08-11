@@ -60,6 +60,7 @@ requireLogin();
     <input type="date" id="orderDate" required>
     <input type="text" id="customerName" placeholder="Customer Name" required>
     <input type="text" id="buyer" placeholder="Buyer" required>
+    <input type="text" id="vendorInfo" placeholder="Vendor Info">
     <input type="text" id="poNumber" placeholder="PO Number" required>
     <input type="text" id="partNumber" placeholder="Part Number" required>
     <input type="text" id="shippingMethod" placeholder="Shipping Method" required>
@@ -80,6 +81,7 @@ requireLogin();
             <input type="date" id="editOrderDate" required>
             <input type="text" id="editCustomerName" placeholder="Customer Name" required>
             <input type="text" id="editBuyer" placeholder="Buyer" required>
+            <input type="text" id="editVendorInfo" placeholder="Vendor Info">
             <input type="text" id="editPoNumber" placeholder="PO Number" required>
             <input type="text" id="editPartNumber" placeholder="Part Number" required>
             <input type="text" id="editShippingMethod" placeholder="Shipping Method" required>
