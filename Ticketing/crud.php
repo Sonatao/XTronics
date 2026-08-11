@@ -84,8 +84,8 @@ if (isset($_GET["action"]) && $_GET["action"] === "search") {
     }
 
     if ($status !== "") {
-        $sql .= " AND status = ?";
-        $params[] = $status;
+        $sql .= " AND status LIKE ?";
+        $params[] = "%$status%";
     }
 
     if ($customer !== "") {

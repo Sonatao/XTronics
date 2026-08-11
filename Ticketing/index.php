@@ -67,7 +67,7 @@ requireLogin();
     <input type="text" id="shippingMethod" placeholder="Shipping Method" required>
     <input type="text" id="notes" placeholder="Notes">
     <input type="text" id="trackingNumber" placeholder="Tracking Number" required>
-    <input type="text" id="status" placeholder="Status" required>
+    <textarea id="status" placeholder="Status" rows="4"></textarea>
 
     <button type="submit">Add Ticket</button>
 </form>
@@ -88,7 +88,7 @@ requireLogin();
             <input type="text" id="editShippingMethod" placeholder="Shipping Method" required>
             <input type="text" id="editNotes" placeholder="Notes">
             <input type="text" id="editTrackingNumber" placeholder="Tracking Number" required>
-            <input type="text" id="editStatus" placeholder="Status" required>
+            <textarea id="editStatus" placeholder="Status" rows="4"></textarea>
 
             <button type="submit">Save Changes</button>
             <button type="button" id="closeModal">Cancel</button>

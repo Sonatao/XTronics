@@ -52,15 +52,23 @@ themeToggleBtn.addEventListener("click", () => {
     applyTheme(currentTheme === "minimal" ? "github" : "minimal");
 });
 
-/* STATUS BADGE CLASS */
+function escapeHtml(value) {
+    const raw = String(value ?? "");
+    return raw.replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/\"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
 function statusClass(status) {
     const s = (status || "").toLowerCase();
     if (s.includes("new")) return "status-badge status-new";
-    if (s.includes("process")) return "status-badge status-processing";
-    if (s.includes("wait")) return "status-badge status-waiting";
-    if (s.includes("ship")) return "status-badge status-shipped";
-    if (s.includes("close")) return "status-badge status-closed";
-    return "status-badge status-new";
+    if (s.includes("process") || s.includes("working") || s.includes("build") || s.includes("in progress")) return "status-badge status-processing";
+    if (s.includes("wait") || s.includes("hold") || s.includes("pending") || s.includes("await")) return "status-badge status-waiting";
+    if (s.includes("ship") || s.includes("dispatch") || s.includes("deliver") || s.includes("sent")) return "status-badge status-shipped";
+    if (s.includes("close") || s.includes("done") || s.includes("complete") || s.includes("finish")) return "status-badge status-closed";
+    return "status-badge status-generic";
 }
 
 /* RENDER TICKETS AS CARDS */
@@ -76,19 +84,30 @@ function renderTickets(data) {
             ? order.notes.substring(0, 80) + "..."
             : (order.notes || "");
 
+        const safeCustomerName = escapeHtml(order.customerName || "");
+        const safePoNumber = escapeHtml(order.poNumber || "");
+        const safePartNumber = escapeHtml(order.partNumber || "");
+        const safeBuyer = escapeHtml(order.buyer || "");
+        const safeVendorOrder = escapeHtml(order.vendorOrder || "");
+        const safeOrderDate = escapeHtml(order.orderDate || "");
+        const safeShippingMethod = escapeHtml(order.shippingMethod || "");
+        const safeTrackingNumber = escapeHtml(order.trackingNumber || "");
+        const safeStatus = escapeHtml(order.status || "");
+        const safeNotes = escapeHtml(notesShort || "");
+
         card.innerHTML = `
             <div class="ticket-main">
                 <div class="ticket-title">
-                    ${order.customerName} &mdash; ${order.poNumber}
+                    ${safeCustomerName} &mdash; ${safePoNumber}
                 </div>
                 <div class="ticket-sub">
-                    Part: ${order.partNumber} &bull; Buyer: ${order.buyer}
+                    Part: ${safePartNumber} &bull; Buyer: ${safeBuyer}
                 </div>
                 <div class="ticket-sub">
-                    Vendor / Vendor Order #: ${order.vendorOrder || ""}
+                    Vendor / Vendor Order #: ${safeVendorOrder}
                 </div>
                 <div class="ticket-notes">
-                    ${notesShort || "<em>No notes</em>"}
+                    ${safeNotes || "<em>No notes</em>"}
                 </div>
                 <div class="ticket-actions">
                     <button onclick="openEdit(${order.id})">Edit</button>
@@ -101,16 +120,16 @@ function renderTickets(data) {
             </div>
             <div class="ticket-meta">
                 <div>
-                    <span class="${statusClass(order.status)}">${order.status}</span>
+                    <span class="${statusClass(order.status)}">${safeStatus}</span>
                 </div>
                 <div class="ticket-sub">
-                    Order Date: ${order.orderDate}
+                    Order Date: ${safeOrderDate}
                 </div>
                 <div class="ticket-sub">
-                    Shipping: ${order.shippingMethod}
+                    Shipping: ${safeShippingMethod}
                 </div>
                 <div class="ticket-sub">
-                    Tracking: ${order.trackingNumber}
+                    Tracking: ${safeTrackingNumber}
                 </div>
             </div>
         `;
@@ -300,17 +319,17 @@ function toggleHistory(id) {
                     <tbody>
                         ${history.map(h => `
                             <tr>
-                                <td>${h.editedAt}</td>
-                                <td>${h.orderDate}</td>
-                                <td>${h.customerName}</td>
-                                <td>${h.buyer}</td>
-                                <td>${h.vendorOrder || ""}</td>
-                                <td>${h.poNumber}</td>
-                                <td>${h.partNumber}</td>
-                                <td>${h.shippingMethod}</td>
-                                <td>${h.notes}</td>
-                                <td>${h.trackingNumber}</td>
-                                <td>${h.status}</td>
+                                <td>${escapeHtml(h.editedAt || "")}</td>
+                                <td>${escapeHtml(h.orderDate || "")}</td>
+                                <td>${escapeHtml(h.customerName || "")}</td>
+                                <td>${escapeHtml(h.buyer || "")}</td>
+                                <td>${escapeHtml(h.vendorOrder || "")}</td>
+                                <td>${escapeHtml(h.poNumber || "")}</td>
+                                <td>${escapeHtml(h.partNumber || "")}</td>
+                                <td>${escapeHtml(h.shippingMethod || "")}</td>
+                                <td>${escapeHtml(h.notes || "")}</td>
+                                <td>${escapeHtml(h.trackingNumber || "")}</td>
+                                <td>${escapeHtml(h.status || "")}</td>
                             </tr>
                         `).join("")}
                     </tbody>

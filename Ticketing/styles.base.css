@@ -180,10 +180,18 @@ section.informationTable {
 .status-badge {
     display: inline-flex;
     align-items: center;
+    max-width: 100%;
     padding: 0.2rem 0.6rem;
     border-radius: 999px;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.status-generic {
+    background: rgba(99, 102, 241, 0.14);
+    color: var(--text-main);
 }
 
 .status-new {
@@ -314,6 +322,8 @@ form#editForm {
 
 form#orderForm input,
 form#editForm input,
+form#orderForm textarea,
+form#editForm textarea,
 form#orderForm select,
 form#editForm select {
     padding: 0.5rem 0.75rem;
@@ -321,6 +331,13 @@ form#editForm select {
     border: 1px solid var(--input-border);
     background: var(--input-bg);
     color: var(--text-main);
+}
+
+form#orderForm textarea,
+form#editForm textarea {
+    min-height: 6rem;
+    resize: vertical;
+    font: inherit;
 }
 
 form#orderForm button,
