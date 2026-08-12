@@ -31,6 +31,33 @@ const editStatus = document.getElementById("editStatus");
 /* THEME TOGGLE */
 const themeToggleBtn = document.getElementById("themeToggle");
 const themeLink = document.getElementById("themeStylesheet");
+const headerAddTicket = document.getElementById("headerAddTicket");
+const headerSearch = document.getElementById("headerSearch");
+const featurePopup = document.getElementById("featurePopup");
+const popupTitle = document.getElementById("popupTitle");
+const closeFeaturePopup = document.getElementById("closeFeaturePopup");
+const popupSearchSection = document.getElementById("popupSearchSection");
+const popupAddSection = document.getElementById("popupAddSection");
+const popupSearchForm = document.getElementById("popupSearchForm");
+const clearPopupFilters = document.getElementById("clearPopupFilters");
+const popupOrderForm = document.getElementById("popupOrderForm");
+
+const popupSearchQuery = document.getElementById("popupSearchQuery");
+const popupSearchCustomer = document.getElementById("popupSearchCustomer");
+const popupSearchDateFrom = document.getElementById("popupSearchDateFrom");
+const popupSearchDateTo = document.getElementById("popupSearchDateTo");
+const popupSearchStatus = document.getElementById("popupSearchStatus");
+
+const popupOrderDate = document.getElementById("popupOrderDate");
+const popupCustomerName = document.getElementById("popupCustomerName");
+const popupBuyer = document.getElementById("popupBuyer");
+const popupVendorOrder = document.getElementById("popupVendorOrder");
+const popupPoNumber = document.getElementById("popupPoNumber");
+const popupPartNumber = document.getElementById("popupPartNumber");
+const popupShippingMethod = document.getElementById("popupShippingMethod");
+const popupNotes = document.getElementById("popupNotes");
+const popupTrackingNumber = document.getElementById("popupTrackingNumber");
+const popupStatus = document.getElementById("popupStatus");
 
 let currentTheme = localStorage.getItem("xt_theme") || "minimal";
 
@@ -50,6 +77,100 @@ applyTheme(currentTheme);
 
 themeToggleBtn.addEventListener("click", () => {
     applyTheme(currentTheme === "minimal" ? "github" : "minimal");
+});
+
+function showPopup(type) {
+    popupSearchSection.classList.toggle("hidden", type !== "search");
+    popupAddSection.classList.toggle("hidden", type !== "add");
+    popupTitle.textContent = type === "search" ? "Search Tickets" : "Add Ticket";
+    featurePopup.classList.remove("hidden");
+    featurePopup.setAttribute("aria-hidden", "false");
+}
+
+function hidePopup() {
+    featurePopup.classList.add("hidden");
+    featurePopup.setAttribute("aria-hidden", "true");
+}
+
+headerAddTicket.addEventListener("click", () => showPopup("add"));
+headerSearch.addEventListener("click", () => showPopup("search"));
+closeFeaturePopup.addEventListener("click", hidePopup);
+featurePopup.addEventListener("click", e => {
+    if (e.target === featurePopup) {
+        hidePopup();
+    }
+});
+
+popupSearchForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const q = popupSearchQuery.value;
+    const customer = popupSearchCustomer.value;
+    const dateFrom = popupSearchDateFrom.value;
+    const dateTo = popupSearchDateTo.value;
+    const statusValue = popupSearchStatus.value;
+
+    const params = new URLSearchParams({
+        action: "search",
+        q,
+        customer,
+        dateFrom,
+        dateTo,
+        status: statusValue
+    });
+
+    fetch("crud.php?" + params.toString())
+        .then(r => r.json())
+        .then(data => {
+            renderTickets(data);
+            hidePopup();
+        })
+        .catch(err => {
+            console.error("Unable to run search", err);
+            alert("Search failed. Please try again.");
+        });
+});
+
+clearPopupFilters.addEventListener("click", () => {
+    popupSearchQuery.value = "";
+    popupSearchCustomer.value = "";
+    popupSearchDateFrom.value = "";
+    popupSearchDateTo.value = "";
+    popupSearchStatus.value = "";
+    loadTickets();
+});
+
+popupOrderForm.addEventListener("submit", e => {
+    e.preventDefault();
+
+    const formData = new FormData();
+    formData.append("action", "create");
+    formData.append("orderDate", popupOrderDate.value);
+    formData.append("customerName", popupCustomerName.value);
+    formData.append("buyer", popupBuyer.value);
+    formData.append("vendorOrder", popupVendorOrder.value);
+    formData.append("poNumber", popupPoNumber.value);
+    formData.append("partNumber", popupPartNumber.value);
+    formData.append("shippingMethod", popupShippingMethod.value);
+    formData.append("notes", popupNotes.value);
+    formData.append("trackingNumber", popupTrackingNumber.value);
+    formData.append("status", popupStatus.value);
+
+    fetch("crud.php", { method: "POST", body: formData })
+        .then(r => r.json())
+        .then(res => {
+            if (res.error) {
+                alert(res.error);
+                return;
+            }
+            popupOrderForm.reset();
+            loadTickets();
+            hidePopup();
+        })
+        .catch(err => {
+            console.error("Create failed", err);
+            alert("Unable to add ticket. Please try again.");
+        });
 });
 
 function escapeHtml(value) {

@@ -18,7 +18,16 @@ requireLogin();
 
 <body>
 
-<button id="themeToggle" class="theme-toggle">Switch Theme</button>
+<header class="sticky-header">
+    <div class="header-brand">
+        <div class="brand-title">XTronics Ticketing</div>
+    </div>
+    <div class="header-nav">
+        <button type="button" class="header-link" id="headerAddTicket">Add Ticket</button>
+        <button type="button" class="header-link" id="headerSearch">Search</button>
+        <button id="themeToggle" class="theme-toggle">Switch Theme</button>
+    </div>
+</header>
 
 <main>
 
@@ -31,6 +40,47 @@ requireLogin();
         <a href="users.php">User Management</a>
     <?php endif; ?>
 </section>
+
+<div id="featurePopup" class="modal hidden" aria-hidden="true">
+    <div class="modal-content feature-popup">
+        <div class="popup-header">
+            <h2 id="popupTitle">Feature</h2>
+            <button id="closeFeaturePopup" type="button" class="close-btn" aria-label="Close popup">×</button>
+        </div>
+
+        <div id="popupSearchSection" class="popup-section hidden">
+            <h3>Search Tickets</h3>
+            <form id="popupSearchForm">
+                <input type="text" id="popupSearchQuery" placeholder="Search text (customer, PO, part, notes, status)">
+                <input type="text" id="popupSearchCustomer" placeholder="Customer name">
+                <input type="date" id="popupSearchDateFrom" placeholder="From date">
+                <input type="date" id="popupSearchDateTo" placeholder="To date">
+                <input type="text" id="popupSearchStatus" placeholder="Status (e.g. New, Shipped)">
+                <div class="popup-form-actions">
+                    <button type="submit">Apply Filters</button>
+                    <button type="button" id="clearPopupFilters">Clear</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="popupAddSection" class="popup-section hidden">
+            <h3>Create New Ticket</h3>
+            <form id="popupOrderForm">
+                <input type="date" id="popupOrderDate" required>
+                <input type="text" id="popupCustomerName" placeholder="Customer Name" required>
+                <input type="text" id="popupBuyer" placeholder="Buyer" required>
+                <input type="text" id="popupVendorOrder" placeholder="Vendor / Vendor Order #">
+                <input type="text" id="popupPoNumber" placeholder="PO Number" required>
+                <input type="text" id="popupPartNumber" placeholder="Part Number" required>
+                <input type="text" id="popupShippingMethod" placeholder="Shipping Method" required>
+                <input type="text" id="popupNotes" placeholder="Notes">
+                <input type="text" id="popupTrackingNumber" placeholder="Tracking Number" required>
+                <textarea id="popupStatus" placeholder="Status" rows="4"></textarea>
+                <button type="submit">Add Ticket</button>
+            </form>
+        </div>
+    </div>
+</div>
 
 <section class="searchFilters">
     <h2>Search & Filters</h2>
