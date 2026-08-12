@@ -13,20 +13,20 @@ requireLogin();
 
     <link rel="stylesheet" href="styles.base.css">
     <link id="themeStylesheet" rel="stylesheet" href="theme.github.css">
-    <script src="app.js" defer></script>
+    <!-- <script src="app.js"></script> -->
 </head>
 
-<header class="sticky-header">
-    <div class="header-brand">
-        <div class="brand-title">XTronics Ticketing</div>
-    </div>
-    <div class="header-nav">
-        <button type="button" class="header-link" id="headerAddTicket">Add Ticket</button>
-        <button type="button" class="header-link" id="headerSearch">Search</button>
-        <button id="themeToggle" class="theme-toggle">Switch Theme</button>
-    </div>
-</header>
 <body>
+<header class="sticky-header">
+    <nav class="header-nav">
+        <button type="button" class="header-link" id="headerAddTicket">Add Ticket</button>
+        <button type="button" class="header-link" id="headerSearch">Search</button>    
+        <button id="themeToggle" class="theme-toggle">Switch Theme</button>
+    </nav>        
+    
+
+</header>
+
 <main>
 
 <section class="title">
@@ -146,6 +146,7 @@ requireLogin();
     window.XTronics.userRole = "<?php echo htmlspecialchars(currentUserRole()); ?>";
 </script>
 
+<script src="app.js"></script>
 
 </body>
 </html>

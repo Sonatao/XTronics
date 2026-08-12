@@ -1,3 +1,7 @@
+/* ============================================
+   GITHUB DARK THEME
+   ============================================ */
+
 :root {
     --bg-body: #0d1117;
     --text-main: #c9d1d9;
@@ -27,41 +31,31 @@
     --shadow-strong: 0 18px 40px rgba(0, 0, 0, 0.7);
 }
 
-/* =========================================
-    Popup Styling
-   ========================================= */
-
-   /* ============================
-   GitHub Aesthetic Popup Modal
-   ============================ */
+/* ============================================
+   GITHUB POPUP
+   ============================================ */
 
 #featurePopup {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(13, 17, 23, 0.65); /* GitHub dark overlay */
+    inset: 0;
+    background: rgba(13, 17, 23, 0.65);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
 }
 
-#featurePopup.hidden {
-    display: none;
-}
+#featurePopup.hidden { display: none; }
 
 .modal-content.feature-popup {
-    background: #0d1117; /* GitHub dark */
-    border: 1px solid #30363d; /* GitHub border */
+    background: #0d1117;
+    border: 1px solid #30363d;
     border-radius: 8px;
     width: 480px;
     max-width: 90%;
     padding: 20px;
     box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-    color: #c9d1d9; /* GitHub text */
-    font-family: system-ui, sans-serif;
+    color: #c9d1d9;
 }
 
 .popup-header {
@@ -76,7 +70,6 @@
 .popup-header h2 {
     font-size: 20px;
     font-weight: 600;
-    color: #c9d1d9;
 }
 
 .close-btn {
@@ -85,29 +78,10 @@
     color: #c9d1d9;
     font-size: 24px;
     cursor: pointer;
-    padding: 0;
 }
 
-.close-btn:hover {
-    color: #f0f6fc;
-}
+.close-btn:hover { color: #f0f6fc; }
 
-.popup-section {
-    margin-top: 20px;
-}
-
-.popup-section.hidden {
-    display: none;
-}
-
-.popup-section h3 {
-    margin-bottom: 12px;
-    font-size: 16px;
-    font-weight: 600;
-    color: #c9d1d9;
-}
-
-/* Inputs */
 #featurePopup input,
 #featurePopup textarea {
     width: 100%;
@@ -117,7 +91,6 @@
     padding: 10px;
     margin-bottom: 12px;
     color: #c9d1d9;
-    font-size: 14px;
 }
 
 #featurePopup input:focus,
@@ -126,16 +99,14 @@
     outline: none;
 }
 
-/* Buttons */
 #featurePopup button[type="submit"],
 #featurePopup button[type="button"] {
-    background: #238636; /* GitHub green */
+    background: #238636;
     border: 1px solid #2ea043;
     color: #fff;
     padding: 8px 14px;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 14px;
 }
 
 #featurePopup button[type="button"] {
@@ -143,27 +114,18 @@
     border-color: #484f58;
 }
 
-#featurePopup button:hover {
-    opacity: 0.9;
-}
+#featurePopup button:hover { opacity: 0.9; }
 
-.popup-form-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-/* ============================
-   GitHub Dark Header Styling
-   ============================ */
+/* ============================================
+   GITHUB HEADER
+   ============================================ */
 
 .sticky-header {
-    position: sticky;
+    position: fixed;
     top: 0;
-    height: 20vh;
-    width: 100%;
+    left: 0;
     z-index: 1000;
-    background: #0d1117; /* GitHub dark */
+    background: #0d1117;
     border-bottom: 1px solid #30363d;
     padding: 12px 20px;
     display: flex;
@@ -175,7 +137,6 @@
     color: #c9d1d9;
     font-size: 20px;
     font-weight: 600;
-    font-family: system-ui, sans-serif;
 }
 
 .header-nav {
@@ -192,8 +153,6 @@
     border-radius: 6px;
     font-size: 14px;
     cursor: pointer;
-    font-family: system-ui, sans-serif;
-    transition: background 0.15s, border-color 0.15s;
 }
 
 .header-link:hover,

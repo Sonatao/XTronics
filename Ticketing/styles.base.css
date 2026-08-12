@@ -24,21 +24,6 @@ main {
     padding: 2rem;
 }
 
-/* Theme toggle */
-
-.theme-toggle {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    border: none;
-    cursor: pointer;
-    background: var(--btn-secondary-bg);
-    color: var(--btn-secondary-text);
-    box-shadow: var(--shadow-soft);
-}
-
 /* Sections */
 
 section.title {
