@@ -80,6 +80,7 @@ main {
 .popup-header {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
     align-items: center;
     margin-bottom: 16px;
     border-bottom: 1px solid #21262d;

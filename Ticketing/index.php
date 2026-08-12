@@ -12,11 +12,9 @@ requireLogin();
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
 
     <link rel="stylesheet" href="styles.base.css">
-    <link id="themeStylesheet" rel="stylesheet" href="theme.minimal.css">
+    <link id="themeStylesheet" rel="stylesheet" href="theme.github.css">
     <script src="app.js" defer></script>
 </head>
-
-<body>
 
 <header class="sticky-header">
     <div class="header-brand">
@@ -28,7 +26,7 @@ requireLogin();
         <button id="themeToggle" class="theme-toggle">Switch Theme</button>
     </div>
 </header>
-
+<body>
 <main>
 
 <section class="title">
@@ -99,11 +97,6 @@ requireLogin();
     <h2>Tickets</h2>
 
     <div class="ticket-list" id="ticketList"></div>
-
-    <div class="exportButtons">
-        <button id="exportSingle" class="action-btn export">Export Selected Ticket</button>
-        <button id="exportAll" class="action-btn export">Export All Tickets</button>
-    </div>
 </section>
 
 <h3>Create New Ticket</h3>

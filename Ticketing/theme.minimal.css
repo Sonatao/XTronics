@@ -163,11 +163,14 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+    height: 20vh;
+    width: 100%;
     background: #ffffff;
     border-bottom: 1px solid #e5e5e5;
     padding: 14px 24px;
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
     align-items: center;
     backdrop-filter: blur(6px); /* Apple-style translucency */
 }

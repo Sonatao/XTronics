@@ -160,6 +160,8 @@
 .sticky-header {
     position: sticky;
     top: 0;
+    height: 20vh;
+    width: 100%;
     z-index: 1000;
     background: #0d1117; /* GitHub dark */
     border-bottom: 1px solid #30363d;
