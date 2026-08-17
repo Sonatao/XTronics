@@ -126,14 +126,13 @@
 .sticky-header {
     position: fixed;
     top: 0;
+    left: 0;
     z-index: 1000;
-    background: #ffffff;
-    border-bottom: 1px solid #e5e5e5;
     padding: 14px 24px;
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    backdrop-filter: blur(6px);
 }
 
 .header-brand .brand-title {

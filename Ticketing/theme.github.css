@@ -121,16 +121,16 @@
    ============================================ */
 
 .sticky-header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
-    background: #0d1117;
-    border-bottom: 1px solid #30363d;
     padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    
 }
 
 .header-brand .brand-title {
